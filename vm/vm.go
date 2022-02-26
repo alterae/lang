@@ -1,3 +1,5 @@
 package vm
 
-// todo
+func Run(b []byte) {
+	// todo
+}
