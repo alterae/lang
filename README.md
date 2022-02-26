@@ -25,6 +25,7 @@ maybe:
 - [ ] type inference
 - [ ] string interpolation
 - [ ] ahead-of-time compiler
+- [ ] actual name
 
 ## syntax example
 
