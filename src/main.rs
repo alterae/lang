@@ -1,3 +1,9 @@
+use clap::StructOpt;
+
+mod cli;
+
 fn main() {
-    println!("Hello, world!");
+    let opts = cli::Opts::parse();
+
+    println!("{opts:?}");
 }
