@@ -1,0 +1,14 @@
+// grammar for the language.  very WIP
+
+program     = { declaration* }
+
+declaration = { useDecl
+              | fnDecl
+              | typeDecl
+              }
+
+useDecl     = { TODO }
+
+fnDecl      = { TODO }
+
+typeDecl    = { TODO }
