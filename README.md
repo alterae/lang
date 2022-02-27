@@ -2,11 +2,10 @@
 
 a simple programming language, created for AP Computer Science
 
-this version might be a wash -- consider rewriting in Rust because Go's module system is a pain
-
 ## design goals
 
-to make a simple proof-of concept programming language interpreter, implemented in Go
+to make a simple proof-of concept programming language interpreter, implemented
+in Rust
 
 the syntax should be somewhere between that of Go and Rust
 
