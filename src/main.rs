@@ -20,5 +20,5 @@ fn main() {
         Ok(code) => lexer::Token::lexer(&code).collect(),
     };
 
-    println!("{tokens:?}");
+    let _ = parser::parse(tokens);
 }

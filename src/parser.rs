@@ -4,10 +4,11 @@
 use crate::lexer;
 
 /// Ast is an abstract syntax tree.
-pub struct _Ast {}
+pub struct Ast {}
 
 /// Parse converts a stream of tokens into an abstract syntax tree.
-pub fn _parse(_stream: Vec<lexer::Token>) -> _Ast {
+pub fn parse(stream: Vec<lexer::Token>) -> Ast {
+    println!("{stream:?}");
     // todo
-    _Ast {}
+    Ast {}
 }
