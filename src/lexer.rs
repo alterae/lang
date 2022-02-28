@@ -2,12 +2,9 @@
 //! of tokens.
 
 /// Token is an atomic unit of source code.
+#[derive(logos::Logos, Debug, PartialEq)]
 pub enum Token {
-    Eof,
-}
-
-/// Lex converts a sequence of source code bytes into a stream of tokens.
-pub fn lex(source: Vec<u8>) -> Vec<Token> {
-    println!("{source:?}");
-    vec![Token::Eof]
+    #[error]
+    #[regex(r"[ \t\n\f]+", logos::skip)]
+    Error,
 }
