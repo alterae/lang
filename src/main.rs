@@ -5,11 +5,8 @@ mod parser;
 
 fn main() {
     let opts = cli::Opts::parse();
-    let path = match opts.cmd {
+    let _path = match opts.cmd {
         cli::SubCommand::Build { path } => path,
-        cli::SubCommand::Run { path, bytecode } => path,
+        cli::SubCommand::Run { path, bytecode: _ } => path,
     };
-
-    // fixme: does not work
-    let foo = parser::Parser::parse();
 }
