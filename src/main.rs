@@ -1,6 +1,7 @@
 use clap::StructOpt;
 
 mod cli;
+mod lexer;
 mod parser;
 
 fn main() {
