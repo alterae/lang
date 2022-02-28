@@ -8,9 +8,9 @@ pub enum Token {
     Identifier,
 
     // keywords
-    #[regex(r"use")]
+    #[token("use")]
     Use,
-    #[regex(r"fn")]
+    #[token("fn")]
     Fn,
 
     // literals
@@ -20,27 +20,27 @@ pub enum Token {
     Number,
 
     // parenthesis, curly braces
-    #[regex(r"\(")]
+    #[token("(")]
     ParenLeft,
-    #[regex(r"\)")]
+    #[token(")")]
     ParenRight,
-    #[regex(r"\{")]
+    #[token("{")]
     BraceLeft,
-    #[regex(r"\}")]
+    #[token("}")]
     BraceRight,
 
     // other punctuation
-    #[regex(r":")]
+    #[token(":")]
     Colon,
-    #[regex(r"::")]
+    #[token("::")]
     ColonColon,
-    #[regex(r"=")]
+    #[token("=")]
     Equal,
-    #[regex(r"==")]
+    #[token("==")]
     EqualEqual,
 
     #[error]
-    #[regex(r"[ \t\n\f]+", logos::skip)]
+    #[regex(r"\s+", logos::skip)]
     #[regex(r"//[^\n]*", logos::skip)]
     Error,
 }
