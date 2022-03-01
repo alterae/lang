@@ -7,7 +7,19 @@ declaration = { useDecl
               | typeDecl
               }
 
-useDecl     = { TODO }
+useDecl     = { "use" ~ identifier ~ ( "::" ~ identifier )* }
+
+identifier  = { alpha ~ ( alpha
+                        | digit
+                        )*
+              }
+
+alpha       = { "_"
+              | 'a'..'z'
+              | 'A'..'Z'
+              }
+
+digit       = { '0'..'9' }
 
 fnDecl      = { TODO }
 
