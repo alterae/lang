@@ -2,7 +2,7 @@
 //! of tokens.
 
 /// Token is an atomic unit of source code.
-#[derive(logos::Logos, Debug, PartialEq)]
+#[derive(logos::Logos, Copy, Debug, PartialEq)]
 pub enum Token {
     #[regex(r"[_a-zA-Z][_0-9a-zA-Z]*")]
     Identifier,
