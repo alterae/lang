@@ -45,16 +45,16 @@ pub enum Token {
     Error,
 }
 
-// TokenStream holds state for the token stream.
+/// TokenStream holds state for the token stream.
 pub struct TokenStream {
-    // The stream of tokens to parse.
+    /// The stream of tokens to parse.
     _stream: Vec<Token>,
-    // The index of the token currently being parsed.
+    /// The index of the token currently being parsed.
     _current: usize,
 }
 
 impl TokenStream {
-    // New constructs a new token stream.
+    /// New constructs a new token stream.
     pub fn new(stream: Vec<Token>) -> Self {
         Self {
             _stream: stream,
@@ -62,17 +62,17 @@ impl TokenStream {
         }
     }
 
-    // Current gets the current token in the stream.
+    /// Current gets the current token in the stream.
     pub fn _current(&self) -> Token {
         self._stream[self._current]
     }
 
-    // Next gets the next token in the stream.
+    /// Next gets the next token in the stream.
     pub fn _next(&self) -> Token {
         self._stream[self._current + 1]
     }
 
-    // Expect checks if the next token is equal to t. If it is, the token is consumed and returned.
+    /// Expect checks if the next token is equal to t. If it is, the token is consumed and returned.
     pub fn _expect(&mut self, t: Token) -> Option<Token> {
         if self._current() == t {
             Some(self._advance())
@@ -81,7 +81,7 @@ impl TokenStream {
         }
     }
 
-    // Advances returns the current token, and advances the current index.
+    /// Advances returns the current token, and advances the current index.
     pub fn _advance(&mut self) -> Token {
         let result = self._current();
         self._current += 1;
