@@ -30,10 +30,10 @@ pub enum Token {
     BraceRight,
 
     // other punctuation
-    #[token(":")]
-    Colon,
     #[token("::")]
     ColonColon,
+    #[token(":=")]
+    ColonEqual,
     #[token("=")]
     Equal,
     #[token("==")]
