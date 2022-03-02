@@ -5,7 +5,7 @@
 #[derive(logos::Logos, Copy, Clone, Debug, PartialEq)]
 pub enum Token {
     #[regex(r"[_a-zA-Z][_0-9a-zA-Z]*")]
-    Identifier,
+    Identifier(String),
 
     // keywords
     #[token("use")]
@@ -15,9 +15,9 @@ pub enum Token {
 
     // literals
     #[regex(r#""(?:[^"]|\\")*""#)] // scuffed quotes lol
-    String,
+    String(String),
     #[regex(r"[1-9][_1-9]*")] // todo: support for non-integers
-    Number,
+    Number(i64),
 
     // parenthesis, curly braces
     #[token("(")]
