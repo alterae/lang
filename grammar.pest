@@ -7,7 +7,9 @@ declaration = { useDecl
               | typeDecl
               }
 
-useDecl     = { "use" ~ identifier ~ ( "::" ~ identifier )* }
+useDecl     = { "use" ~ path }
+
+path        = { identifier ~ ( "::" ~ identifier )* }
 
 identifier  = { alpha ~ ( alpha
                         | digit
