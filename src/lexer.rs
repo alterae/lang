@@ -16,7 +16,7 @@ pub enum Token {
     // literals
     #[regex(r#""(?:[^"]|\\")*""#)] // scuffed quotes lol
     String(String),
-    #[regex(r"[1-9][_1-9]*")] // todo: support for non-integers
+    #[regex(r"[1-9][_1-9]*")] // todo: support for non-integers, negative numbers
     Number(i64),
 
     // parenthesis, curly braces

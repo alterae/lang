@@ -21,7 +21,7 @@ alpha       = { "_"
               | 'A'..'Z'
               }
 
-digit       = { '0'..'9' }
+digit       = { '0'..'9' } // todo: support negative numbers, floats
 
 fnDecl      = { TODO }
 
