@@ -1,7 +1,6 @@
-use std::{fs, process};
+use std::fs;
 
 use clap::StructOpt;
-use logos::Logos;
 
 mod cli;
 mod lexer;
@@ -12,13 +11,11 @@ fn main() {
 
     // read the entire file into memory, which isn't great for large programs
     // but whatever
-    let _stream = match fs::read_to_string(&opts.path) {
-        Err(e) => {
-            eprintln!("Error opening {:?}: {e}", opts.path);
-            process::exit(1)
-        }
-        Ok(code) => lexer::Token::lexer(&code).collect(),
-    };
+    let source = &fs::read_to_string(&opts.path).expect("error reading file");
 
-    // todo: parsing
+    // construct a lexer for the source code
+    let lexer = lexer::new(source);
+
+    // pass the parser the lexer so it can just use it and make things easier for me
+    parser::parse(lexer)
 }
