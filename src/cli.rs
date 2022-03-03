@@ -4,5 +4,6 @@ use std::path;
 #[derive(clap::Parser, Debug)]
 #[clap(version)]
 pub struct Opts {
+    /// The file to run.
     pub path: path::PathBuf,
 }
