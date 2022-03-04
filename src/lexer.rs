@@ -3,6 +3,7 @@
 use logos::Logos;
 
 /// Token is an atomic unit of source code.
+/// TODO: figure out how to get source text attached to these
 #[derive(logos::Logos, Clone, Debug, PartialEq)]
 pub enum Token {
     #[regex(r"[_a-zA-Z][_0-9a-zA-Z]*")]
