@@ -10,6 +10,8 @@ pub fn parse(mut lexer: lexer::Lexer) -> Program {
         use lexer::Token::*;
         match t {
             Use => program.push(Declaration::new_use(&mut lexer)),
+            Fn => todo!(),
+            Type => todo!(),
             _ => {
                 // TODO: something other than panic
                 panic!("unexpected token {t:?}. expected `use`, `fn`, or `type`")
@@ -24,6 +26,7 @@ pub fn parse(mut lexer: lexer::Lexer) -> Program {
 pub type Program = Vec<Declaration>;
 
 /// AST node representing a `use` declaration.
+#[derive(Debug)]
 pub enum Declaration {
     Use(Path),
 }
@@ -33,20 +36,23 @@ impl Declaration {
     /// FIXME: bad because it consumes things we can then not un-consume
     fn new_use(lexer: &mut lexer::Lexer) -> Self {
         let path = Vec::new();
-        while let (Some(t1), Some(t2)) = (lexer.next(), lexer.next()) {
+        while let (Some(t1), Some(t2)) = (lexer.next(), lexer.peek()) {
             use lexer::Token::*;
             match (t1, t2) {
-                (Identifier, ColonColon) => {
+                (Identifier, &ColonColon) => {
                     // TODO: add the identifier to the path
+
+                    // discard the ColonColon
+                    lexer.next();
                 }
-                (Identifier, _) => {
+                (Identifier, t) => {
                     // TODO: add the identifier to the path and somehow deal
                     // with the second item
+
                     break;
                 }
-                _ => {
-                    // TODO: somehow deal with this
-                    break;
+                (t, _) => {
+                    panic!("unexpected token {t:?}. expected identifier")
                 }
             }
         }

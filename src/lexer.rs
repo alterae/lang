@@ -1,5 +1,7 @@
 //! Module lexer contains code for turning a string of source code into a stream
 //! of tokens.
+use std::iter;
+
 use logos::Logos;
 
 /// Token is an atomic unit of source code.
@@ -10,10 +12,12 @@ pub enum Token {
     Identifier,
 
     // keywords
-    #[token("use")]
-    Use,
     #[token("fn")]
     Fn,
+    #[token("type")]
+    Type,
+    #[token("use")]
+    Use,
 
     // literals
     #[regex(r#""(?:[^"]|\\")*""#)] // scuffed quotes lol
@@ -48,9 +52,9 @@ pub enum Token {
 }
 
 /// Wrapper type for the logos lexer type to simplify things.
-pub type Lexer<'source> = logos::Lexer<'source, Token>;
+pub type Lexer<'source> = iter::Peekable<logos::Lexer<'source, Token>>;
 
 /// New constructs and returns a new Lexer for the given source.
 pub fn new(source: &str) -> Lexer {
-    Token::lexer(source)
+    Token::lexer(source).peekable()
 }
