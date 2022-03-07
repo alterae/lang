@@ -61,4 +61,5 @@ impl Declaration {
 }
 
 /// A path to an item in a module.
+/// TODO: break out parsing logic into separate function we can reuse
 pub type Path = Vec<String>;
