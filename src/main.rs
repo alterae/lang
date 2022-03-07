@@ -1,6 +1,6 @@
 use std::fs;
 
-use clap::StructOpt;
+use clap::Parser;
 
 mod cli;
 mod lexer;
