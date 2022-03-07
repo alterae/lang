@@ -39,13 +39,13 @@ impl Declaration {
         while let (Some(t1), Some(t2)) = (lexer.next(), lexer.peek()) {
             use lexer::Token::*;
             match (t1, t2) {
-                (Identifier, &ColonColon) => {
+                (Identifier(_), &ColonColon) => {
                     // TODO: add the identifier to the path
 
                     // discard the ColonColon
                     lexer.next();
                 }
-                (Identifier, _t) => {
+                (Identifier(_), _t) => {
                     // TODO: add the identifier to the path and somehow deal
                     // with the second item
 
