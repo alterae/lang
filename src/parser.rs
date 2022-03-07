@@ -45,7 +45,7 @@ impl Declaration {
                     // discard the ColonColon
                     lexer.next();
                 }
-                (Identifier, t) => {
+                (Identifier, _t) => {
                     // TODO: add the identifier to the path and somehow deal
                     // with the second item
 
