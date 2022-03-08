@@ -86,7 +86,12 @@ pub struct Params(Vec<Param>);
 
 impl Params {
     fn new(lexer: &mut lexer::Lexer) -> Self {
-        todo!()
+        match lexer.next().expect("unexpected end of file. expected '('") {
+            lexer::Token::ParenLeft => {}
+            t => panic!("unexpected token {t:?}. expected '('"),
+        };
+
+        todo!() // TODO: parsing arg list and closing parenthesis
     }
 }
 
