@@ -35,19 +35,18 @@ impl Declaration {
     /// Constructs a new `Declaration::Use`, getting a path from the lexer.
     /// FIXME: bad because it consumes things we can then not un-consume
     fn new_use(lexer: &mut lexer::Lexer) -> Self {
-        let path = Vec::new();
+        let mut path = Vec::new();
         while let (Some(t1), Some(t2)) = (lexer.next(), lexer.peek()) {
             use lexer::Token::*;
             match (t1, t2) {
-                (Identifier(_), &ColonColon) => {
-                    // TODO: add the identifier to the path
+                (Identifier(ident), &ColonColon) => {
+                    path.push(ident);
 
                     // discard the ColonColon
                     lexer.next();
                 }
-                (Identifier(_), _t) => {
-                    // TODO: add the identifier to the path and somehow deal
-                    // with the second item
+                (Identifier(ident), _t) => {
+                    path.push(ident);
 
                     break;
                 }
