@@ -6,17 +6,8 @@ use crate::lexer;
 pub fn parse(mut lexer: lexer::Lexer) -> Program {
     let mut program = Vec::new();
 
-    while let Some(t) = lexer.next() {
-        use lexer::Token::*;
-        match t {
-            Use => program.push(Declaration::new_use(&mut lexer)),
-            Fn => todo!(),
-            Type => todo!(),
-            _ => {
-                // TODO: something other than panic
-                panic!("unexpected token {t:?}. expected `use`, `fn`, or `type`")
-            }
-        }
+    while lexer.peek().is_some() {
+        program.push(Declaration::new(&mut lexer));
     }
 
     program
@@ -32,9 +23,20 @@ pub enum Declaration {
 }
 
 impl Declaration {
-    /// Constructs a new `Declaration::Use`.
-    fn new_use(lexer: &mut lexer::Lexer) -> Self {
-        Self::Use(Path::new(lexer))
+    /// Constructs a new `Declaration`.
+    fn new(lexer: &mut lexer::Lexer) -> Self {
+        use lexer::Token::*;
+        // this unwrap is okay because we already checked `is_some()` in the
+        // calling while loop
+        match lexer.next().unwrap() {
+            Use => Self::Use(Path::new(lexer)),
+            Fn => todo!(),
+            Type => todo!(),
+            t => {
+                // TODO: something other than panic
+                panic!("unexpected token {t:?}. expected `use`, `fn`, or `type`")
+            }
+        }
     }
 }
 
