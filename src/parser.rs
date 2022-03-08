@@ -32,8 +32,7 @@ pub enum Declaration {
 }
 
 impl Declaration {
-    /// Constructs a new `Declaration::Use`, getting a path from the lexer.
-    /// FIXME: bad because it consumes things we can then not un-consume
+    /// Constructs a new `Declaration::Use`.
     fn new_use(lexer: &mut lexer::Lexer) -> Self {
         Self::Use(Path::new(lexer))
     }
@@ -45,6 +44,7 @@ impl Declaration {
 pub struct Path(Vec<String>);
 
 impl Path {
+    /// Constructs a new `Path`, getting the tokens for the path from the lexer.
     fn new(lexer: &mut lexer::Lexer) -> Self {
         let mut path = Vec::new();
         while let (Some(t1), Some(t2)) = (lexer.next(), lexer.peek()) {
