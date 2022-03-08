@@ -16,10 +16,14 @@ pub fn parse(mut lexer: lexer::Lexer) -> Program {
 /// The root node of the AST.
 pub type Program = Vec<Declaration>;
 
-/// AST node representing a `use` declaration.
+/// AST node representing a declaration.
 #[derive(Debug)]
 pub enum Declaration {
+    /// A `use` declaration.
     Use(Path),
+    /// A function declaration.
+    /// TODO: return types
+    Fn { params: Params, block: Block },
 }
 
 impl Declaration {
@@ -30,7 +34,10 @@ impl Declaration {
         // calling while loop
         match lexer.next().unwrap() {
             Use => Self::Use(Path::new(lexer)),
-            Fn => todo!(),
+            Fn => Self::Fn {
+                params: Params::new(lexer),
+                block: Block::new(lexer),
+            },
             Type => todo!(),
             t => {
                 // TODO: something other than panic
@@ -70,5 +77,51 @@ impl Path {
         }
 
         Self(path)
+    }
+}
+
+/// A list of function parameters.
+#[derive(Debug)]
+pub struct Params(Vec<Param>);
+
+impl Params {
+    fn new(lexer: &mut lexer::Lexer) -> Self {
+        todo!()
+    }
+}
+
+/// A function parameter.
+#[derive(Debug)]
+pub struct Param {
+    /// The name of the function parameter.
+    pub name: String,
+    /// The type of the function parameter. Called `datatype` because `type` is
+    /// a reserved word in Rust.
+    pub datatype: String,
+}
+
+impl Param {
+    fn new(lexer: &mut lexer::Lexer) -> Self {
+        todo!()
+    }
+}
+
+/// AST node representing a sequence of expressions.
+#[derive(Debug)]
+pub struct Block(Vec<Expr>);
+
+impl Block {
+    fn new(lexer: &mut lexer::Lexer) -> Self {
+        todo!()
+    }
+}
+
+/// AST node representing an expression.
+#[derive(Debug)]
+pub struct Expr;
+
+impl Expr {
+    fn new(lexer: &mut lexer::Lexer) -> Self {
+        todo!()
     }
 }
