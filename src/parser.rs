@@ -35,6 +35,17 @@ impl Declaration {
     /// Constructs a new `Declaration::Use`, getting a path from the lexer.
     /// FIXME: bad because it consumes things we can then not un-consume
     fn new_use(lexer: &mut lexer::Lexer) -> Self {
+        Self::Use(Path::new(lexer))
+    }
+}
+
+/// A path to an item in a module.
+/// TODO: break out parsing logic into separate function we can reuse
+#[derive(Debug)]
+pub struct Path(Vec<String>);
+
+impl Path {
+    fn new(lexer: &mut lexer::Lexer) -> Self {
         let mut path = Vec::new();
         while let (Some(t1), Some(t2)) = (lexer.next(), lexer.peek()) {
             use lexer::Token::*;
@@ -55,10 +66,7 @@ impl Declaration {
                 }
             }
         }
-        Self::Use(path)
+
+        Self(path)
     }
 }
-
-/// A path to an item in a module.
-/// TODO: break out parsing logic into separate function we can reuse
-pub type Path = Vec<String>;
