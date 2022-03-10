@@ -23,7 +23,12 @@ pub enum Declaration {
     Use(Path),
     /// A function declaration.
     /// TODO: return types
-    Fn { params: Params, block: Block },
+    Fn {
+        name: String,
+        params: Params,
+        return_type: Option<String>,
+        block: Block,
+    },
 }
 
 impl Declaration {
@@ -35,7 +40,18 @@ impl Declaration {
         match lexer.next().unwrap() {
             Use => Self::Use(Path::new(lexer)),
             Fn => Self::Fn {
+                name: match lexer.next() {
+                    Some(Identifier(s)) => s,
+                    Some(t) => panic!("unexpected token {t:?}. expected function name"),
+                    None => panic!("unexpected end of file. expected function name"),
+                },
                 params: Params::new(lexer),
+                return_type: match lexer.next() {
+                    Some(Identifier(s)) => Some(s),
+                    Some(BraceLeft) => None,
+                    Some(t) => panic!("unexpected token {t:?}. expected return type or `{{`"),
+                    None => panic!("unexpected end of file. expected return type or `{{`"),
+                },
                 block: Block::new(lexer),
             },
             Type => todo!(),
@@ -86,12 +102,33 @@ pub struct Params(Vec<Param>);
 
 impl Params {
     fn new(lexer: &mut lexer::Lexer) -> Self {
-        match lexer.next().expect("unexpected end of file. expected '('") {
+        match lexer.next().expect("unexpected end of file. expected `(`") {
             lexer::Token::ParenLeft => {}
-            t => panic!("unexpected token {t:?}. expected '('"),
+            t => panic!("unexpected token {t:?}. expected `(`"),
         };
 
-        todo!() // TODO: parsing arg list and closing parenthesis
+        let mut params = Vec::new();
+
+        if let Some(lexer::Token::ParenRight) = lexer.peek() {
+            lexer.next();
+            return Self(params);
+        }
+
+        while let (Some(t1), Some(t2), Some(t3)) = (lexer.next(), lexer.next(), lexer.next()) {
+            use lexer::Token::*;
+            match (t1, t2, t3) {
+                (Identifier(name), Identifier(datatype), Comma) => {
+                    params.push(Param { name, datatype })
+                }
+                (Identifier(name), Identifier(datatype), ParenRight) => {
+                    params.push(Param { name, datatype });
+                    break;
+                }
+                ts => panic!("unexpected tokens {ts:?}. expected `name Type,` or `name Type)`"),
+            }
+        }
+
+        Self(params)
     }
 }
 
@@ -103,12 +140,6 @@ pub struct Param {
     /// The type of the function parameter. Called `datatype` because `type` is
     /// a reserved word in Rust.
     pub datatype: String,
-}
-
-impl Param {
-    fn new(lexer: &mut lexer::Lexer) -> Self {
-        todo!()
-    }
 }
 
 /// AST node representing a sequence of expressions.

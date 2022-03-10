@@ -42,6 +42,8 @@ pub enum Token {
     ColonColon,
     #[token(":=")]
     ColonEqual,
+    #[token(",")]
+    Comma,
     #[token("=")]
     Equal,
     #[token("==")]
