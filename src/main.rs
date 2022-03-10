@@ -17,5 +17,8 @@ fn main() {
     let lexer = lexer::new(source);
 
     // pass the parser the lexer so it can just use it and make things easier for me
-    let _program = parser::parse(lexer);
+    let program = parser::parse(lexer);
+
+    // TODO: compiler and vm
+    println!("{program:?}");
 }
