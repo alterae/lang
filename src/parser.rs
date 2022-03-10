@@ -81,7 +81,7 @@ impl Path {
                     // discard the ColonColon
                     lexer.next();
                 }
-                (Identifier(ident), _t) => {
+                (Identifier(ident), _) => {
                     path.push(ident);
 
                     break;
