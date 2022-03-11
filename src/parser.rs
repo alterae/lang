@@ -154,7 +154,16 @@ impl Block {
 
 /// AST node representing an expression.
 #[derive(Debug)]
-pub struct Expr;
+pub enum Expr {
+    /// Variable initialization (ie `name := expr`).
+    VarInit { name: String, value: Box<Expr> },
+    /// Function call.
+    Call { path: Path, args: Vec<Expr> },
+    /// String literal.
+    String(String),
+    /// Numeric literal.
+    Number(f64),
+}
 
 impl Expr {
     fn new(lexer: &mut lexer::Lexer) -> Self {
