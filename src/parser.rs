@@ -94,6 +94,12 @@ impl Path {
 
         Self(path)
     }
+
+    fn prepend(self, ident: String) -> Self {
+        let path = vec![ident];
+        path.append(&mut self.0);
+        Self(path)
+    }
 }
 
 /// A list of function parameters.
@@ -148,25 +154,68 @@ pub struct Block(Vec<Expr>);
 
 impl Block {
     fn new(lexer: &mut lexer::Lexer) -> Self {
-        todo!()
+        let mut block = Vec::new();
+
+        while lexer.peek().is_some() {
+            block.push(Expr::new(lexer))
+        }
+
+        Self(block)
     }
 }
 
 /// AST node representing an expression.
 #[derive(Debug)]
 pub enum Expr {
-    /// Variable initialization (ie `name := expr`).
-    VarInit { name: String, value: Box<Expr> },
+    /// Binary expresion (ie `l + r`).
+    Binary {
+        lhs: Box<Expr>,
+        rhs: Box<Expr>,
+        op: Operator,
+    },
+    /// Unary expression (ie `-x`).
+    Unary { expr: Box<Expr>, op: Operator },
+    /// "Variable" binding (ie `name := expr`).
+    Binding { name: String, value: Box<Expr> },
     /// Function call.
     Call { path: Path, args: Vec<Expr> },
     /// String literal.
     String(String),
     /// Numeric literal.
     Number(f64),
+    /// Binding name.
+    Identifier(String),
 }
 
 impl Expr {
     fn new(lexer: &mut lexer::Lexer) -> Self {
-        todo!()
+        match lexer.next() {
+            Some(lexer::Token::String(s)) => Self::String(s),
+            Some(lexer::Token::Number(n)) => Self::Number(n),
+            // if it starts with a name it's either a reference to an existing
+            // variable or a binding to a new one
+            Some(lexer::Token::Identifier(s)) => match lexer.peek() {
+                Some(lexer::Token::ColonEqual) => {
+                    lexer.next();
+                    lexer.next();
+
+                    Self::Binding {
+                        name: s,
+                        value: Expr::new(lexer).into(),
+                    }
+                }
+                Some(lexer::Token::ColonColon) => {
+                    // TODO: skip the `::`, parse a path, prepend `s`
+                    todo!()
+                }
+                Some(_) => Self::Identifier(s),
+                None => panic!("unexpected end of file. expected `:=` or start of expression"),
+            },
+            Some(t) => panic!("unexpected token {t:?}. expected start of expression"),
+            None => panic!("unexpected end of file. expected start of expression"),
+        }
     }
 }
+
+#[derive(Debug)]
+pub enum Operator {}
