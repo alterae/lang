@@ -95,8 +95,8 @@ impl Path {
         Self(path)
     }
 
-    fn prepend(self, ident: String) -> Self {
-        let path = vec![ident];
+    fn prepend(mut self, ident: String) -> Self {
+        let mut path = vec![ident];
         path.append(&mut self.0);
         Self(path)
     }
