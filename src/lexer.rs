@@ -5,7 +5,7 @@ use std::{iter, num};
 use logos::Logos;
 
 /// Token is an atomic unit of source code.
-/// TODO: figure out how to get source text attached to these
+/// TODO: rewrite this to support line numbers
 #[derive(logos::Logos, Clone, Debug, PartialEq)]
 #[logos(subpattern digits = r"[0-9][_0-9]*")]
 pub enum Token {

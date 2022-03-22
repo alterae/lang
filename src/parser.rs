@@ -187,6 +187,7 @@ pub enum Expr {
     Identifier(String),
 }
 
+// FIXME: needs fixing and we don't have the error handling for it
 impl Expr {
     fn new(lexer: &mut lexer::Lexer) -> Self {
         match lexer.next() {
@@ -197,7 +198,7 @@ impl Expr {
             Some(lexer::Token::Identifier(s)) => match lexer.peek() {
                 Some(lexer::Token::ColonEqual) => {
                     lexer.next();
-                    lexer.next();
+                    //lexer.next();
 
                     Self::Binding {
                         name: s,
@@ -205,9 +206,17 @@ impl Expr {
                     }
                 }
                 Some(lexer::Token::ColonColon) => {
-                    // TODO: skip the `::`, parse a path, prepend `s`
-                    todo!()
+                    // TODO: support for referencing non-functions by path
+                    lexer.next();
+                    Self::Call {
+                        path: Path::new(lexer).prepend(s),
+                        args: Vec::new(),
+                    }
                 }
+                Some(lexer::Token::ParenLeft) => Self::Call {
+                    path: Path(vec![s]),
+                    args: Vec::new(),
+                },
                 Some(_) => Self::Identifier(s),
                 None => panic!("unexpected end of file. expected `:=` or start of expression"),
             },
