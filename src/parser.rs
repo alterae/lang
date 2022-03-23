@@ -197,8 +197,7 @@ impl Expr {
             // variable or a binding to a new one
             Some(lexer::Token::Identifier(s)) => match lexer.peek() {
                 Some(lexer::Token::ColonEqual) => {
-                    lexer.next();
-                    //lexer.next();
+                    lexer.next(); // consume the `:=`
 
                     Self::Binding {
                         name: s,
