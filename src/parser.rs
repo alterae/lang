@@ -168,13 +168,13 @@ impl Block {
 #[derive(Debug)]
 pub enum Expr {
     /// Binary expresion (ie `l + r`).
-    Binary {
+    _Binary {
         lhs: Box<Expr>,
         rhs: Box<Expr>,
         op: Operator,
     },
     /// Unary expression (ie `-x`).
-    Unary { expr: Box<Expr>, op: Operator },
+    _Unary { expr: Box<Expr>, op: Operator },
     /// "Variable" binding (ie `name := expr`).
     Binding { name: String, value: Box<Expr> },
     /// Function call.
