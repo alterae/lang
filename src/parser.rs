@@ -156,10 +156,14 @@ impl Block {
     fn new(lexer: &mut lexer::Lexer) -> Self {
         let mut block = Vec::new();
 
-        while lexer.peek().is_some() {
-            block.push(Expr::new(lexer))
+        while let Some(t) = lexer.peek() {
+            match t {
+                lexer::Token::BraceRight => break,
+                _ => block.push(Expr::new(lexer)),
+            }
         }
 
+        lexer.next();
         Self(block)
     }
 }
@@ -178,7 +182,7 @@ pub enum Expr {
     /// "Variable" binding (ie `name := expr`).
     Binding { name: String, value: Box<Expr> },
     /// Function call.
-    Call { path: Path, args: Vec<Expr> },
+    Call { path: Path, args: Args },
     /// String literal.
     String(String),
     /// Numeric literal.
@@ -209,12 +213,12 @@ impl Expr {
                     lexer.next();
                     Self::Call {
                         path: Path::new(lexer).prepend(s),
-                        args: Vec::new(),
+                        args: Args::new(lexer),
                     }
                 }
                 Some(lexer::Token::ParenLeft) => Self::Call {
                     path: Path(vec![s]),
-                    args: Vec::new(),
+                    args: Args::new(lexer),
                 },
                 Some(_) => Self::Identifier(s),
                 None => panic!("unexpected end of file. expected `:=` or start of expression"),
@@ -227,3 +231,33 @@ impl Expr {
 
 #[derive(Debug)]
 pub enum Operator {}
+
+#[derive(Debug)]
+pub struct Args(Vec<Expr>);
+
+impl Args {
+    pub fn new(lexer: &mut lexer::Lexer) -> Self {
+        // FIXME: extract to `expect` method
+        match lexer.next().expect("unexpected end of file. expected `(`") {
+            lexer::Token::ParenLeft => {}
+            t => panic!("unexpected token {t:?}. expected `(`"),
+        };
+
+        let mut args = Vec::new();
+
+        if let Some(lexer::Token::ParenRight) = lexer.peek() {
+            lexer.next();
+            return Self(args);
+        }
+
+        while let Some(t) = lexer.peek() {
+            match t {
+                lexer::Token::ParenRight => break,
+                _ => args.push(Expr::new(lexer)),
+            }
+        }
+
+        lexer.next();
+        Self(args)
+    }
+}
