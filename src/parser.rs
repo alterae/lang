@@ -158,13 +158,15 @@ impl Block {
 
         while let Some(t) = lexer.peek() {
             match t {
-                lexer::Token::BraceRight => break,
+                lexer::Token::BraceRight => {
+                    lexer.next();
+                    return Self(block);
+                }
                 _ => block.push(Expr::new(lexer)),
             }
         }
 
-        lexer.next();
-        Self(block)
+        panic!("unexpected end of file. expected `}}`");
     }
 }
 
@@ -257,7 +259,6 @@ impl Args {
             }
         }
 
-        lexer.next();
-        Self(args)
+        panic!("unexpected end of file. expected `)`");
     }
 }
