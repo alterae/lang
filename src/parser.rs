@@ -260,6 +260,7 @@ impl Args {
             }
         }
 
+        // FIXME: reaching this somehow??
         panic!("unexpected end of file. expected `)`");
     }
 }
