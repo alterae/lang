@@ -196,13 +196,14 @@ pub enum Expr {
 // FIXME: needs fixing and we don't have the error handling for it
 impl Expr {
     fn new(lexer: &mut lexer::Lexer) -> Self {
+        use lexer::Token::*;
         match lexer.next() {
-            Some(lexer::Token::String(s)) => Self::String(s),
-            Some(lexer::Token::Number(n)) => Self::Number(n),
+            Some(String(s)) => Self::String(s),
+            Some(Number(n)) => Self::Number(n),
             // if it starts with a name it's either a reference to an existing
             // variable or a binding to a new one
-            Some(lexer::Token::Identifier(s)) => match lexer.peek() {
-                Some(lexer::Token::ColonEqual) => {
+            Some(Identifier(s)) => match lexer.peek() {
+                Some(ColonEqual) => {
                     lexer.next(); // consume the `:=`
 
                     Self::Binding {
@@ -210,7 +211,7 @@ impl Expr {
                         value: Expr::new(lexer).into(),
                     }
                 }
-                Some(lexer::Token::ColonColon) => {
+                Some(ColonColon) => {
                     // TODO: support for referencing non-functions by path
                     lexer.next();
                     Self::Call {
@@ -218,7 +219,7 @@ impl Expr {
                         args: Args::new(lexer),
                     }
                 }
-                Some(lexer::Token::ParenLeft) => Self::Call {
+                Some(ParenLeft) => Self::Call {
                     path: Path(vec![s]),
                     args: Args::new(lexer),
                 },
