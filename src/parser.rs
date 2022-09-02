@@ -6,7 +6,7 @@ pub trait Parse {
 
 impl Parse for lexer::TokenStream {
     fn parse(self) -> Ast {
-        println!("lexed!");
+        println!("todo: parser");
 
         Ast // TODO
     }
