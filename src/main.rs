@@ -1,14 +1,16 @@
 use clap::Parser;
+use parser::Parse;
+use runner::Run;
 
 use crate::lexer::Lex;
 
 mod cli;
 mod lexer;
+mod parser;
+mod runner;
 
-fn main() {
+fn main() -> runner::Result {
     let opts = cli::Opts::from_args();
 
-    opts.file().lex();
-
-    todo!("parse, and run input");
+    opts.file().lex().parse().run()
 }
